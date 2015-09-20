@@ -3,11 +3,18 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"github.com/mgutz/ansi"
 )
 
 func myexit() {
 	fmt.Println("Later, dude...")
 	os.Exit(0)
+}
+
+func cprint(msg string) {
+	cmsg := ansi.Color(msg, "white")
+	fmt.Println(cmsg)
 }
 
 func help() {

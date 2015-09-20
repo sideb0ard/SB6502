@@ -11,67 +11,69 @@ import "fmt"
 // This is repeated until the instruction in the Instruction Store equals 0 (Halt)
 
 func (mp *MicroProcessor) executeInstruction() {
-	fmt.Printf("Execution :: IP: %d, IS: %d, R0: %d, R1: %d\n",
-		mp.registers.IP, mp.registers.IS,
-		mp.registers.R0, mp.registers.R1)
-	fmt.Println("Memory: ", mp.memory)
+	if mp.debug {
+		fmt.Printf("Execution :: IP: %d, IS: %d, R0: %d, R1: %d\n",
+			mp.registers.IP, mp.registers.IS,
+			mp.registers.R0, mp.registers.R1)
+		fmt.Println("Memory: ", mp.memory)
+	}
 
 	switch mp.registers.IS {
 	case 0:
-		fmt.Println("Halting now..")
+		cprint("Halting now..")
 		mp.registers.Status = 999 // arbitary
 		return
 	case 1:
-		fmt.Println("Adding")
+		cprint(fmt.Sprintf("Adding R1: %d to R0: %d and storing in R0", mp.registers.R1, mp.registers.R0))
 		mp.registers.R0 = mp.registers.R0 + mp.registers.R1
 	case 2:
+		cprint(fmt.Sprintf("Subtracting R1: %d from R0: %d and storing in R0", mp.registers.R1, mp.registers.R0))
 		fmt.Println("Subtracting now..")
 		mp.registers.R0 = mp.registers.R0 - mp.registers.R1
 	case 3:
-		fmt.Println("Incrementing R0..")
+		cprint("Incrementing R0..")
 		mp.registers.R0 = mp.registers.R0 + 1
 	case 4:
-		fmt.Println("Incrementing R1..")
+		cprint("Incrementing R1..")
 		mp.registers.R0 = mp.registers.R1 + 1
 	case 5:
-		fmt.Println("decrementing R0..")
+		cprint("decrementing R0..")
 		mp.registers.R0 = mp.registers.R0 - 1
 	case 6:
-		fmt.Println("decrementing R1..")
+		cprint("decrementing R1..")
 		mp.registers.R1 = mp.registers.R1 - 1
 	case 7:
-		fmt.Println("**Ring Bell**")
+		cprint("**Ring Bell**")
 
 	case 8:
-		fmt.Println("Print Data in R0..")
-		fmt.Println(mp.registers.R0)
+		cprint(fmt.Sprintf("R0 contains:: %d", mp.registers.R0))
 
 	// Instructions 9 and above are 2 byte instructions,
 	// 2nd Byte is <data>
 
 	case 9:
-		fmt.Println("Load <data> to R0", mp.memory[mp.registers.IP-1])
+		cprint(fmt.Sprintf("Load <data:%d> to R0", mp.memory[mp.registers.IP-1]))
 		mp.registers.R0 = mp.memory[mp.registers.IP-1]
 	case 10:
-		fmt.Println("Load <data> to R1")
+		cprint(fmt.Sprintf("Load <data:%d> to R1", mp.memory[mp.registers.IP-1]))
 		mp.registers.R1 = mp.memory[mp.registers.IP-1]
 	case 11:
-		fmt.Println("Store R0 to Address")
+		cprint(fmt.Sprintf("Load R0 to Memory Address <data:%d>", mp.memory[mp.registers.IP-1]))
 		mp.memory[mp.registers.IP-1] = mp.registers.R0
 	case 12:
-		fmt.Println("Store R1 to Address ")
+		cprint(fmt.Sprintf("Load R1 to Memory Address <data:%d>", mp.memory[mp.registers.IP-1]))
 		mp.memory[mp.registers.IP-1] = mp.registers.R1
 	case 13:
-		fmt.Println("Jump To Address..")
+		cprint(fmt.Sprintf("Jump to Memory Address <data:%d>", mp.memory[mp.registers.IP-1]))
 		mp.registers.IP = mp.memory[mp.registers.IP-1]
 	case 14:
-		fmt.Println("Jump To Address if R0..")
-		if mp.registers.R0 == 0 {
+		cprint(fmt.Sprintf("Jump to Memory Address <data:%d> if R0 not 0", mp.memory[mp.registers.IP-1]))
+		if mp.registers.R0 != 0 {
 			mp.registers.IP = mp.memory[mp.registers.IP-1]
 		}
 	case 15:
-		fmt.Println("Jump To Address if Not R0..")
-		if mp.registers.R0 != 0 {
+		cprint(fmt.Sprintf("Jump to Memory Address <data:%d> if R0 == 0", mp.memory[mp.registers.IP-1]))
+		if mp.registers.R0 == 0 {
 			mp.registers.IP = mp.memory[mp.registers.IP-1]
 		}
 	}

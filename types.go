@@ -11,6 +11,7 @@ type RegisterBank struct {
 type MicroProcessor struct {
 	registers RegisterBank
 	memory    [16]int
+	debug     bool
 }
 
 type B0ard struct {
