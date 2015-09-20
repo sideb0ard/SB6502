@@ -80,11 +80,7 @@ func main() {
 		crx := regexp.MustCompile("^cpu ([0-9]+) run$")
 		crxr := crx.FindStringSubmatch(input)
 		if len(crxr) == 2 {
-			cpuNum, err := strconv.Atoi(crxr[1])
-			if err != nil {
-				fmt.Println("CPU not an int, ya numpty")
-				continue
-			}
+			cpuNum, _ := strconv.Atoi(crxr[1])
 			if len(b0ard.MicroProcessors) > cpuNum {
 				b0ard.MicroProcessors[cpuNum].fetchExecuteLoop()
 			}
@@ -94,6 +90,16 @@ func main() {
 		npxr := npx.FindStringSubmatch(input)
 		if len(npxr) == 2 {
 			newProgram(pChan, npxr[1])
+		}
+
+		rpx := regexp.MustCompile("^prog ([0-9]+) \"([0-9 ]+)\"$") // r for replace
+		rpxr := rpx.FindStringSubmatch(input)
+		if len(rpxr) == 3 {
+			progNum, _ := strconv.Atoi(rpxr[1])
+			if len(b0ard.Programs) > progNum {
+				cprint("Updating program")
+				b0ard.Programs[progNum].Update(rpxr[2])
+			}
 		}
 
 		//// PROCESS LIST

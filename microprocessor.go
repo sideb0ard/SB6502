@@ -2,7 +2,11 @@ package main
 
 // The SB6502, a virtual clone of the MOS 6502
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/mgutz/ansi"
+)
 
 // Instruction Loop:
 // The instruction at the address given by the Instruction Pointer is loaded into the Instruction Store
@@ -46,7 +50,8 @@ func (mp *MicroProcessor) executeInstruction() {
 		cprint("**Ring Bell**")
 
 	case 8:
-		cprint(fmt.Sprintf("R0 contains:: %d", mp.registers.R0))
+		cmsg := ansi.Color(fmt.Sprintf("R0 contains:: %d", mp.registers.R0), "cyan")
+		fmt.Println(cmsg)
 
 	// Instructions 9 and above are 2 byte instructions,
 	// 2nd Byte is <data>
@@ -88,8 +93,7 @@ func (mp *MicroProcessor) dumpMemory() {
 func (mp *MicroProcessor) fetchExecuteLoop() {
 	for {
 		if mp.registers.Status == 999 {
-			// reset CPU and return
-			mp.registers.Status = 0
+			mp.reset()
 			return
 		}
 		mp.registers.IS = mp.memory[mp.registers.IP]
@@ -116,12 +120,23 @@ func (mp *MicroProcessor) loadProgram(program [16]int) {
 	}
 }
 
+func (mp *MicroProcessor) reset() {
+	mp.registers.IP = 0
+	mp.registers.IS = 0
+	mp.registers.R0 = 0
+	mp.registers.R1 = 0
+	mp.registers.Status = 0
+	for i, _ := range mp.memory {
+		mp.memory[i] = 0
+	}
+}
+
 func newMP(mpChan chan *MicroProcessor) {
 	mp := new(MicroProcessor)
 	mpChan <- mp
 }
 
 func (mp *MicroProcessor) String() string {
-	return fmt.Sprintf("Registers:: IP: %d IS: %d R0: %d R1: %d\nMemory:: %d",
-		mp.registers.IP, mp.registers.IS, mp.registers.R0, mp.registers.R1, mp.memory)
+	return fmt.Sprintf("Registers:: IP: %d IS: %d R0: %d R1: %d, Status: %b\nMemory:: %d",
+		mp.registers.IP, mp.registers.IS, mp.registers.R0, mp.registers.R1, mp.registers.Status, mp.memory)
 }

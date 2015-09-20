@@ -18,8 +18,8 @@ func cprint(msg string) {
 }
 
 func help() {
-	fmt.Println("Instruction Set - 16 of them:::")
-	fmt.Println("First 9 are 1 byte instructions:")
+	cprint("Instruction Set - 16 of them:::")
+	cprint("First 9 are 1 byte instructions:")
 	fmt.Println("0 = Halt")
 	fmt.Println("1 = Add (R0 = R0 + R1)")
 	fmt.Println("2 = Subtract (R0 = R0 – R1)")
@@ -29,7 +29,7 @@ func help() {
 	fmt.Println("6 = Decrement R1 (R1 = R1 – 1)")
 	fmt.Println("7 = Ring Bell")
 	fmt.Println("8 = Print Value in R0")
-	fmt.Println("Last 7 are 2 byte instructions (second byte is <data>:")
+	cprint("Last 7 are 2 byte instructions (second byte is <data>):")
 	fmt.Println("9 = Load <data> into R0")
 	fmt.Println("10 = Load <data> into R1")
 	fmt.Println("11 = Store R0 into address <data>")
