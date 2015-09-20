@@ -16,10 +16,7 @@ import (
 
 func (mp *MicroProcessor) executeInstruction() {
 	if mp.debug {
-		fmt.Printf("Execution :: IP: %d, IS: %d, R0: %d, R1: %d\n",
-			mp.registers.IP, mp.registers.IS,
-			mp.registers.R0, mp.registers.R1)
-		fmt.Println("Memory: ", mp.memory)
+		fmt.Println(mp)
 	}
 
 	switch mp.registers.IS {
