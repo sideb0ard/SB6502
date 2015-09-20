@@ -47,32 +47,32 @@ func (mp *MicroProcessor) executeInstruction() {
 		cprint("decrementing R1..")
 		mp.registers.R1 = mp.registers.R1 - 1
 	case 7:
-		cprint("**Ring Bell**")
-
-	case 8:
 		cmsg := ansi.Color(fmt.Sprintf("R0 contains:: %d", mp.registers.R0), "cyan")
 		fmt.Println(cmsg)
 
-	// Instructions 9 and above are 2 byte instructions,
+	// Instructions 8 and above are 2 byte instructions,
 	// 2nd Byte is <data>
 
-	case 9:
+	case 8:
 		cprint(fmt.Sprintf("Load <data:%d> to R0", mp.memory[mp.registers.IP-1]))
 		mp.registers.R0 = mp.memory[mp.registers.IP-1]
-	case 10:
+	case 9:
 		cprint(fmt.Sprintf("Load <data:%d> to R1", mp.memory[mp.registers.IP-1]))
 		mp.registers.R1 = mp.memory[mp.registers.IP-1]
-	case 11:
+	case 10:
 		cprint(fmt.Sprintf("Load R0 to Memory Address <data:%d>", mp.memory[mp.registers.IP-1]))
 		mp.memory[mp.registers.IP-1] = mp.registers.R0
-	case 12:
+	case 11:
 		cprint(fmt.Sprintf("Load R1 to Memory Address <data:%d>", mp.memory[mp.registers.IP-1]))
 		mp.memory[mp.registers.IP-1] = mp.registers.R1
-	case 13:
+	case 12:
 		cprint(fmt.Sprintf("Jump to Memory Address <data:%d>", mp.memory[mp.registers.IP-1]))
 		mp.registers.IP = mp.memory[mp.registers.IP-1]
+	case 13:
+		cprint(fmt.Sprintf("Store val from Memory Address <data:%d> in R0", mp.memory[mp.registers.IP-1]))
+		mp.registers.R0 = mp.memory[mp.registers.IP-1]
 	case 14:
-		cprint(fmt.Sprintf("Jump to Memory Address <data:%d> if R0 not 0", mp.memory[mp.registers.IP-1]))
+		cprint(fmt.Sprintf("Jump to Memory Address <data:%d> if R0 != 0", mp.memory[mp.registers.IP-1]))
 		if mp.registers.R0 != 0 {
 			mp.registers.IP = mp.memory[mp.registers.IP-1]
 		}
@@ -99,7 +99,7 @@ func (mp *MicroProcessor) fetchExecuteLoop() {
 		mp.registers.IS = mp.memory[mp.registers.IP]
 		fmt.Println("\nInitial:: IP:", mp.registers.IP, " || IS:", mp.registers.IS)
 
-		if mp.registers.IS >= 9 {
+		if mp.registers.IS >= 8 {
 			mp.registers.IP += 2
 		} else {
 			mp.registers.IP += 1

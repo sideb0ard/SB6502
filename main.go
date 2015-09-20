@@ -86,6 +86,15 @@ func main() {
 			}
 		}
 
+		cdx := regexp.MustCompile("^cpu ([0-9]+) debug$")
+		cdxr := cdx.FindStringSubmatch(input)
+		if len(cdxr) == 2 {
+			cpuNum, _ := strconv.Atoi(cdxr[1])
+			if len(b0ard.MicroProcessors) > cpuNum {
+				b0ard.MicroProcessors[cpuNum].debug = true
+			}
+		}
+
 		npx := regexp.MustCompile("^new prog \"([0-9 ]+)\"$")
 		npxr := npx.FindStringSubmatch(input)
 		if len(npxr) == 2 {
