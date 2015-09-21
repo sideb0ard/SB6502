@@ -14,11 +14,11 @@ type MicroProcessor struct {
 	debug     bool
 }
 
+type Program struct {
+	code [32]int
+}
+
 type B0ard struct {
 	MicroProcessors []*MicroProcessor
 	Programs        []*Program
-}
-
-type Program struct {
-	code [32]int
 }
