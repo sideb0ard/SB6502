@@ -49,10 +49,6 @@ func main() {
 			fmt.Println("New CPU added")
 			newMP(mpChan)
 		}
-		hx, _ := regexp.MatchString("^help$", input)
-		if hx {
-			help()
-		}
 
 		lpx := regexp.MustCompile("^cpu ([0-9]+) load ([0-9]+)$")
 		lpxr := lpx.FindStringSubmatch(input)
@@ -120,6 +116,11 @@ func main() {
 			// Programs
 			b0ard.listPs()
 			fmt.Println()
+		}
+
+		hx, _ := regexp.MatchString("^help$", input)
+		if hx {
+			help()
 		}
 	}
 }
