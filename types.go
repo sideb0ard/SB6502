@@ -10,7 +10,7 @@ type RegisterBank struct {
 
 type MicroProcessor struct {
 	registers RegisterBank
-	memory    [16]int
+	memory    [32]int
 	debug     bool
 }
 
@@ -20,5 +20,5 @@ type B0ard struct {
 }
 
 type Program struct {
-	code [16]int
+	code [32]int
 }

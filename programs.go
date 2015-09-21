@@ -37,7 +37,7 @@ func (p *Program) Update(strProg string) {
 		p.code[i] = 0
 	}
 	splitProg := strings.Split(strProg, " ")
-	if len(splitProg) <= 16 {
+	if len(splitProg) <= 32 {
 		for i, v := range splitProg {
 			num, err := strconv.Atoi(v)
 			if err != nil {

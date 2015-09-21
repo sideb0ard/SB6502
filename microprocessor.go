@@ -58,16 +58,16 @@ func (mp *MicroProcessor) executeInstruction() {
 		mp.registers.R1 = mp.memory[mp.registers.IP-1]
 	case 10:
 		cprint(fmt.Sprintf("Load R0 to Memory Address <data:%d>", mp.memory[mp.registers.IP-1]))
-		mp.memory[mp.registers.IP-1] = mp.registers.R0
+		mp.memory[mp.memory[mp.registers.IP-1]] = mp.registers.R0
 	case 11:
 		cprint(fmt.Sprintf("Load R1 to Memory Address <data:%d>", mp.memory[mp.registers.IP-1]))
-		mp.memory[mp.registers.IP-1] = mp.registers.R1
+		mp.memory[mp.memory[mp.registers.IP-1]] = mp.registers.R1
 	case 12:
-		cprint(fmt.Sprintf("Jump to Memory Address <data:%d>", mp.memory[mp.registers.IP-1]))
-		mp.registers.IP = mp.memory[mp.registers.IP-1]
-	case 13:
 		cprint(fmt.Sprintf("Store val from Memory Address <data:%d> in R0", mp.memory[mp.registers.IP-1]))
-		mp.registers.R0 = mp.memory[mp.registers.IP-1]
+		mp.registers.R0 = mp.memory[mp.memory[mp.registers.IP-1]]
+	case 13:
+		cprint(fmt.Sprintf("Jump to Memory Address <data:%d>", mp.memory[mp.registers.IP-1]))
+		mp.registers.IP = mp.memory[mp.memory[mp.registers.IP-1]]
 	case 14:
 		cprint(fmt.Sprintf("Jump to Memory Address <data:%d> if R0 != 0", mp.memory[mp.registers.IP-1]))
 		if mp.registers.R0 != 0 {
@@ -106,9 +106,9 @@ func (mp *MicroProcessor) fetchExecuteLoop() {
 	}
 }
 
-func (mp *MicroProcessor) loadProgram(program [16]int) {
+func (mp *MicroProcessor) loadProgram(program [32]int) {
 	for k, v := range program {
-		if v < 0 || v > 15 {
+		if v < 0 || v > 31 {
 			fmt.Println("bleurgh, buffer overflow!")
 			return
 		}

@@ -18,6 +18,14 @@ func cprint(msg string) {
 }
 
 func help() {
+	cprint("VIRTUAL SB6502 - HELP!!")
+	cprint("create a new cpu with 'new cpu'")
+	cprint("create a new program with 'new prog \"<instructions>\" - see below for instruction set")
+	fmt.Println()
+	cprint("See whats loaded with 'ps'")
+	cprint("Load Program 0 into CPU 0 with 'cpu 0 load 0'")
+	cprint("Run CPU with 'cpu 0 run'")
+	fmt.Println()
 	cprint("Instruction Set - 16 of them:::")
 	cprint("First 8 are 1 byte instructions:")
 	fmt.Println("0 = Halt")
