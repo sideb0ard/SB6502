@@ -29,4 +29,19 @@ Last 7 are 2 byte instructions (second byte is \<data\>):
 15 = Jump to address \<data\> if R0 == 0
 
 
+Example programs:  
+`new prog "8 10 7 5 14 2"`  
+
+which is read as:  
+8 10    // load val '10' into R0  
+7       // print R0  
+5       // decrement R0  
+14 2    // go to instruction 2 if R0 != 0  
+
+i.e. it's a loop from 10..1 
+
+more advanced: to go from 1..10, you need to store values in memory too:  
+`new prog "8 10 10 31 8 1 10 30 12 30 7 3 10 30 12 31 5 10 31 14 8"`
+
+
 
